@@ -55,7 +55,6 @@ void typeCommand(){
 	
 	switch(resolveUserOption(command_words[0])){
 		case 1:
-			cout<<"Entra"<<endl;
 			createFunction(command_words[1], command_words[2], command_words[3]);
 			break;
 		case 2:
@@ -162,6 +161,12 @@ int resolveUserOption(string option){
 }
 
 void createFunction(string block_name, string block_size, string block_number){
+	
+	if(block_name == "" || block_size == "" || block_number == ""){
+		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		return;
+	}
+	
 	cout<<"create"<<endl;
 	cout<<"Block name: "<<block_name<<endl;
 	cout<<"Block size: "<<block_size<<endl;
@@ -173,23 +178,47 @@ void unmountFunction(){
 }
 
 void mountFunction(string block_name){
+	
+	if(block_name == ""){
+		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		return;
+	}
+	
 	cout<<"mount"<<endl;
 	cout<<"Block name: "<<block_name<<endl;
 }
 
 void loadFunction(string file_path, string file_name){
+	
+	if(file_name == "" || file_path == ""){
+		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		return;
+	}
+	
 	cout<<"load"<<endl;
 	cout<<"File path: "<<file_path<<endl;
 	cout<<"File name: "<<file_name<<endl;
 }
 
 void downloadFunction(string virtual_file_name, string local_file_name){
+	
+	if(virtual_file_name == "" || local_file_name == ""){
+		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		return;
+	}
+	
 	cout<<"download"<<endl;
 	cout<<"Virtual file name: "<<virtual_file_name<<endl;
 	cout<<"Local file name: "<<local_file_name<<endl;
 }
 
 void rmFunction(string file_name){
+	
+	if(file_name == ""){
+		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		return;
+	}
+	
 	cout<<"rm"<<endl;
 	cout<<"File name: "<<file_name<<endl;
 }
@@ -203,6 +232,12 @@ void infoFunction(){
 }
 
 void detailsFunction(string file_name){
+	
+	if(file_name == ""){
+		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		return;
+	}
+	
 	cout<<"details"<<endl;
 	cout<<"File name: "<<file_name<<endl;
 }

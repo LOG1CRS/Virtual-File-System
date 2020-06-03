@@ -9,17 +9,17 @@ using namespace std;
 void typeCommand();
 int splitCommand(string);
 int resolveUserOption(string);
-void createFunction();
+void createFunction(string, string, string);
 void unmountFunction();
-void mountFunction();
-void loadFunction();
-void downloadFunction();
-void rmFunction();
+void mountFunction(string);
+void loadFunction(string, string);
+void downloadFunction(string, string);
+void rmFunction(string);
 void lsFunction();
 void infoFunction();
-void detailsFunction();
+void detailsFunction(string);
 
-string command_words[4];
+string command_words[5];
 
 int main(){
 	
@@ -52,24 +52,26 @@ void typeCommand(){
 	getline(cin, command);
 	int num_words = splitCommand(command);
 	
+	
 	switch(resolveUserOption(command_words[0])){
 		case 1:
-			createFunction();
+			cout<<"Entra"<<endl;
+			createFunction(command_words[1], command_words[2], command_words[3]);
 			break;
 		case 2:
 			unmountFunction();
 			break;
 		case 3:
-			mountFunction();
+			mountFunction(command_words[1]);
 			break;
 		case 4:
-			loadFunction();
+			loadFunction(command_words[1], command_words[2]);
 			break;
 		case 5:
-			downloadFunction();
+			downloadFunction(command_words[1], command_words[2]);
 			break;
 		case 6:
-			rmFunction();
+			rmFunction(command_words[1]);
 			break;
 		case 7:
 			lsFunction();
@@ -78,7 +80,7 @@ void typeCommand(){
 			infoFunction();
 			break;
 		case 9:
-			detailsFunction();
+			detailsFunction(command_words[1]);
 			break;
 		case 10:
 			cout<<"The commands you can use: "<<endl;
@@ -159,28 +161,37 @@ int resolveUserOption(string option){
 	return optionValue;
 }
 
-void createFunction(){
+void createFunction(string block_name, string block_size, string block_number){
 	cout<<"create"<<endl;
+	cout<<"Block name: "<<block_name<<endl;
+	cout<<"Block size: "<<block_size<<endl;
+	cout<<"Block divided into: "<<block_number<<endl;
 }
 
 void unmountFunction(){
 	cout<<"unmount"<<endl;
 }
 
-void mountFunction(){
+void mountFunction(string block_name){
 	cout<<"mount"<<endl;
+	cout<<"Block name: "<<block_name<<endl;
 }
 
-void loadFunction(){
+void loadFunction(string file_path, string file_name){
 	cout<<"load"<<endl;
+	cout<<"File path: "<<file_path<<endl;
+	cout<<"File name: "<<file_name<<endl;
 }
 
-void downloadFunction(){
+void downloadFunction(string virtual_file_name, string local_file_name){
 	cout<<"download"<<endl;
+	cout<<"Virtual file name: "<<virtual_file_name<<endl;
+	cout<<"Local file name: "<<local_file_name<<endl;
 }
 
-void rmFunction(){
+void rmFunction(string file_name){
 	cout<<"rm"<<endl;
+	cout<<"File name: "<<file_name<<endl;
 }
 
 void lsFunction(){
@@ -191,8 +202,9 @@ void infoFunction(){
 	cout<<"info"<<endl;
 }
 
-void detailsFunction(){
+void detailsFunction(string file_name){
 	cout<<"details"<<endl;
+	cout<<"File name: "<<file_name<<endl;
 }
 
 

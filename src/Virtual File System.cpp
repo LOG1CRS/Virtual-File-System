@@ -1,3 +1,13 @@
+/**
+ * Virtual File System
+ *
+ * Developed by André Marco Ruiz Sandoval, Alfredo Emmanuel García Falcon, Jorge Alejandro Chávez Nuñez
+ * Final project for Operating System Course.
+ * Professor Miguel Alcaraz Rivera
+ *
+ */
+
+
 #include <iostream> 
 #include <list> 
 #include <iterator> 
@@ -54,7 +64,7 @@ int main(){
 		cout<<"Do you want type another command? (y|n)"<<endl;
 		cin>>iterator_command;
 		
-		//Clear 
+		//Clear console
 		system("cls");
 		
 	}while(iterator_command == 'y' || iterator_command == 'Y');
@@ -64,6 +74,12 @@ int main(){
 	return 0;
 }
 
+/**
+ * typeCommand function
+ *
+ * This function gets the command and calls a command according to the command entered,
+ * switch statement calls resolveUseroption to gets an integer to calls a specific function.
+ */
 void typeCommand(){
 	string command; 
 	cout<<"Please type a command"<<endl;
@@ -135,7 +151,15 @@ void typeCommand(){
 	}
 }
 
-
+/**
+ * splitCommand function
+ *
+ * This function divides the entered command into words,
+ * istringstream divides the command according spaces.
+ *
+ * @param the command entered
+ * @return the number of word divided
+ */
 int splitCommand(string command){
 	istringstream spliter(command); 
 	int num_of_words = 0;
@@ -151,6 +175,14 @@ int splitCommand(string command){
     return num_of_words-1;
 }
 
+/**
+ * resolveUserOption function
+ *
+ * This function return the integer value of the entered command.
+ *
+ * @param the first word of the command
+ * @return the integer value of the command
+ */
 int resolveUserOption(string option){
 	int optionValue;
 	
@@ -179,6 +211,15 @@ int resolveUserOption(string option){
 	return optionValue;
 }
 
+/**
+ * createFunction function
+ *
+ * This function loads the virtual file system into memory,
+ *
+ * @param block name
+ * @param block size
+ * @param block number
+ */
 void createFunction(string block_name, string block_size, string block_number){
 	
 	if(block_name == "" || block_size == "" || block_number == ""){
@@ -192,10 +233,24 @@ void createFunction(string block_name, string block_size, string block_number){
 	cout<<"Block divided into: "<<block_number<<endl;
 }
 
+/**
+ * unmountFunction function
+ *
+ * This function saves virtual file system to specified file on hard drive,
+ *
+ *
+ */
 void unmountFunction(){
 	cout<<"unmount"<<endl;
 }
 
+/**
+ * mountFunction function
+ *
+ * This function loads a previously saved file system into memory,
+ *
+ * @param block name
+ */
 void mountFunction(string block_name){
 	
 	if(block_name == ""){
@@ -207,6 +262,14 @@ void mountFunction(string block_name){
 	cout<<"Block name: "<<block_name<<endl;
 }
 
+/**
+ * loadFunction function
+ *
+ * This function loads a file to the virtual file system from the local hard drive,
+ *
+ * @param file path
+ * @param file name
+ */
 void loadFunction(string file_path, string file_name){
 	
 	if(file_name == "" || file_path == ""){
@@ -219,6 +282,14 @@ void loadFunction(string file_path, string file_name){
 	cout<<"File name: "<<file_name<<endl;
 }
 
+/**
+ * downloadFunction function
+ *
+ * This function downloads a file from the virtual file system to the local hard drive,
+ *
+ * @param virtual file name
+ * @param local file name
+ */
 void downloadFunction(string virtual_file_name, string local_file_name){
 	
 	if(virtual_file_name == "" || local_file_name == ""){
@@ -231,6 +302,13 @@ void downloadFunction(string virtual_file_name, string local_file_name){
 	cout<<"Local file name: "<<local_file_name<<endl;
 }
 
+/**
+ * rmFunction function
+ *
+ * This function deletes a file from virtual file system,
+ *
+ * @param file name
+ */
 void rmFunction(string file_name){
 	
 	if(file_name == ""){
@@ -242,14 +320,35 @@ void rmFunction(string file_name){
 	cout<<"File name: "<<file_name<<endl;
 }
 
+/**
+ * lsFunction function
+ *
+ * This function lists the files,
+ *
+ *
+ */
 void lsFunction(){
 	cout<<"ls"<<endl;
 }
 
+/**
+ * infoFunction function
+ *
+ * This function gives system information, including volume size, used space, and free space,
+ *
+ *
+ */
 void infoFunction(){
 	cout<<"info"<<endl;
 }
 
+/**
+ * detailsFunction function
+ *
+ * This function shows the details of how a file is saved, the number of blocks it uses and the list of blocks where it is saved,
+ *
+ * @param file name
+ */
 void detailsFunction(string file_name){
 	
 	if(file_name == ""){

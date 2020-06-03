@@ -9,6 +9,15 @@ using namespace std;
 void typeCommand();
 int splitCommand(string);
 int resolveUserOption(string);
+void createFunction();
+void unmountFunction();
+void mountFunction();
+void loadFunction();
+void downloadFunction();
+void rmFunction();
+void lsFunction();
+void infoFunction();
+void detailsFunction();
 
 string command_words[4];
 
@@ -45,31 +54,31 @@ void typeCommand(){
 	
 	switch(resolveUserOption(command_words[0])){
 		case 1:
-			cout<<"create"<<endl;
+			createFunction();
 			break;
 		case 2:
-			cout<<"unmount"<<endl;
+			unmountFunction();
 			break;
 		case 3:
-			cout<<"mount"<<endl;
+			mountFunction();
 			break;
 		case 4:
-			cout<<"load"<<endl;
+			loadFunction();
 			break;
 		case 5:
-			cout<<"download"<<endl;
+			downloadFunction();
 			break;
 		case 6:
-			cout<<"rm"<<endl;
+			rmFunction();
 			break;
 		case 7:
-			cout<<"ls"<<endl;
+			lsFunction();
 			break;
 		case 8:
-			cout<<"info"<<endl;
+			infoFunction();
 			break;
 		case 9:
-			cout<<"details"<<endl;
+			detailsFunction();
 			break;
 		case 10:
 			cout<<"The commands you can use: "<<endl;
@@ -149,6 +158,43 @@ int resolveUserOption(string option){
 	
 	return optionValue;
 }
+
+void createFunction(){
+	cout<<"create"<<endl;
+}
+
+void unmountFunction(){
+	cout<<"unmount"<<endl;
+}
+
+void mountFunction(){
+	cout<<"mount"<<endl;
+}
+
+void loadFunction(){
+	cout<<"load"<<endl;
+}
+
+void downloadFunction(){
+	cout<<"download"<<endl;
+}
+
+void rmFunction(){
+	cout<<"rm"<<endl;
+}
+
+void lsFunction(){
+	cout<<"ls"<<endl;
+}
+
+void infoFunction(){
+	cout<<"info"<<endl;
+}
+
+void detailsFunction(){
+	cout<<"details"<<endl;
+}
+
 
 
 

@@ -6,6 +6,7 @@
 #include <sstream>
 using namespace std; 
 
+//Functions declarations
 void typeCommand();
 int splitCommand(string);
 int resolveUserOption(string);
@@ -19,8 +20,17 @@ void lsFunction();
 void infoFunction();
 void detailsFunction(string);
 
+//Global variables
 string command_words[5];
 
+
+/**
+ * Main function
+ *
+ * in this function the code starts,
+ * It is in charge of introducing the user and maintaining the loop,
+ * so that the user can add all the commands he wants without finishing the program.
+ */
 int main(){
 	
 	char iterator_command;
@@ -31,19 +41,27 @@ int main(){
 	Sleep(1000);
 	
 	do{
+		//Clear input stream
 		cin.clear();
 		cin.sync();
+		
+		//Get user option
 		typeCommand();
-		cout<<endl;
+		
+		//Ask if the user wants type another command
 		Sleep(1000);
+		cout<<endl;
 		cout<<"Do you want type another command? (y|n)"<<endl;
 		cin>>iterator_command;
 		
+		//Clear 
 		system("cls");
 		
 	}while(iterator_command == 'y' || iterator_command == 'Y');
 	
+	//Finish program
 	cout<<"Virtual File System Finished"<<endl;
+	return 0;
 }
 
 void typeCommand(){
@@ -113,9 +131,10 @@ void typeCommand(){
 			cout<<"-------------------------------------------------------------------------------------------------------------------------"<<endl;
 			break;
 		default:
-			cout<<"Plase type a valid command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+			cout<<"Plase type a VALID COMMAND, if you have a doubt please type a command: 'manual' to help you"<<endl;
 	}
 }
+
 
 int splitCommand(string command){
 	istringstream spliter(command); 
@@ -163,7 +182,7 @@ int resolveUserOption(string option){
 void createFunction(string block_name, string block_size, string block_number){
 	
 	if(block_name == "" || block_size == "" || block_number == ""){
-		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		cout<<"Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
 		return;
 	}
 	
@@ -180,7 +199,7 @@ void unmountFunction(){
 void mountFunction(string block_name){
 	
 	if(block_name == ""){
-		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		cout<<"Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
 		return;
 	}
 	
@@ -191,7 +210,7 @@ void mountFunction(string block_name){
 void loadFunction(string file_path, string file_name){
 	
 	if(file_name == "" || file_path == ""){
-		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		cout<<"Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
 		return;
 	}
 	
@@ -203,7 +222,7 @@ void loadFunction(string file_path, string file_name){
 void downloadFunction(string virtual_file_name, string local_file_name){
 	
 	if(virtual_file_name == "" || local_file_name == ""){
-		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		cout<<"Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
 		return;
 	}
 	
@@ -215,7 +234,7 @@ void downloadFunction(string virtual_file_name, string local_file_name){
 void rmFunction(string file_name){
 	
 	if(file_name == ""){
-		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		cout<<"Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
 		return;
 	}
 	
@@ -234,7 +253,7 @@ void infoFunction(){
 void detailsFunction(string file_name){
 	
 	if(file_name == ""){
-		cout<<"Plase type a valid parameters for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
+		cout<<"Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you"<<endl;
 		return;
 	}
 	

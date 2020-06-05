@@ -162,7 +162,7 @@ void typeCommand()
 		cout << "-------------------------------------------------------------------------------------------------------------------------" << endl;
 		break;
 	default:
-		cout << "Plase type a VALID COMMAND, if you have a doubt please type a command: 'manual' to help you" << endl;
+		cout << "Please type a VALID COMMAND, if you have a doubt please type a command: 'manual' to help you" << endl;
 	}
 }
 
@@ -261,7 +261,7 @@ void createVolume(string volume_name, string block_size, string block_number)
 
 	if (volume_name == "" || block_size == "" || block_number == "")
 	{
-		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
+		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
 		return;
 	}
 
@@ -319,7 +319,7 @@ void mountVolume(string block_name)
 
 	if (block_name == "")
 	{
-		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
+		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
 		return;
 	}
 
@@ -362,7 +362,7 @@ void downloadFile(string virtual_file_name, string local_file_name)
 
 	if (virtual_file_name == "" || local_file_name == "")
 	{
-		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you " << endl;
+		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you " << endl;
 		return;
 	}
 
@@ -383,7 +383,7 @@ void rmFile(string file_name)
 
 	if (file_name == "")
 	{
-		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
+		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
 		return;
 	}
 
@@ -427,7 +427,7 @@ void details(string file_name)
 
 	if (file_name == "")
 	{
-		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
+		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
 		return;
 	}
 

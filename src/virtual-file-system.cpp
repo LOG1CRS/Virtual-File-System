@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <list>
 #include <iterator>
 //#include <windows.h>
@@ -41,6 +42,8 @@ bool isNumber(string);
 //Global variables
 string command_words[5];
 char *volume;
+int blockSize;
+int blockNumber;
 
 /**
  * Main function
@@ -78,7 +81,7 @@ int main()
 		//system("cls");
 
 	} while (iterator_command == 'y' || iterator_command == 'Y');
-	if (strlen(volume) > 0){
+	if (strlen(volume) >= 0){
 		free(volume);
 		cout << "Memory released" << endl;
 	}
@@ -282,15 +285,17 @@ void createVolume(string volume_name, string block_size, string block_number)
 		return;
 	}
 
-	int blockSize = stoi(block_size);
-	int blockNumber = stoi(block_number);
+	blockSize = stoi(block_size);
+	blockNumber = stoi(block_number);
 
 	volume = (char*) malloc(blockSize * blockNumber);
 	memset(volume, '|', blockSize * blockNumber);
+	char validVolume[] = "Valid Virtual File System";
+	memcpy(volume, validVolume, strlen(validVolume));
 	for (int i = 0; i < strlen(volume); i++)
-        	cout << volume[i] << " ";
+        	cout << volume[i];
 
-	cout << "create" << endl;
+	cout << endl << "create" << endl;
 	cout << "Block name: " << volume_name << endl;
 	cout << "Block size: " << blockSize << endl;
 	cout << "Block number: " << blockNumber << endl;
@@ -306,7 +311,16 @@ void createVolume(string volume_name, string block_size, string block_number)
  */
 void unmountVolume()
 {
-	cout << "unmount" << endl;
+	char *data;
+	data = (char*) malloc(sizeof(volume));
+	memcpy(data, volume, sizeof(volume));
+
+	ofstream fout;
+	fout.open("file.loco");
+	fout << volume;
+	fout.close();
+
+	cout << "File saved, called file.loco" << endl;
 }
 
 /**
@@ -316,17 +330,66 @@ void unmountVolume()
  *
  * @param block name
  */
-void mountVolume(string block_name)
+void mountVolume(string file_name)
 {
-
-	if (block_name == "")
+	if (file_name == "")
 	{
 		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
 		return;
 	}
 
 	cout << "mount" << endl;
-	cout << "Block name: " << block_name << endl;
+	cout << "Block name: " << file_name << endl;
+
+	std::ifstream is (file_name, std::ifstream::binary);
+	if (is) {
+		// get length of file:
+		is.seekg (0, is.end);
+		int length = is.tellg();
+		is.seekg (0, is.beg);
+
+		char * buffer = new char [length];
+
+		std::cout << "Reading " << length << " characters... " << endl;
+		// read data as a block:
+		is.read (buffer,length);
+
+		if (is){
+			std::cout << "All characters read successfully." << endl;
+			char validVolume[] = "Valid Virtual File System";
+			char *checkVolume;
+			checkVolume = (char*) malloc(sizeof(validVolume));
+			for(int i = 0; i < strlen(validVolume); i++)
+				checkVolume[i]=buffer[i];
+			//cout << checkVolume;
+			for(int i = 0; i < strlen(checkVolume); i++)
+				cout << checkVolume[i];
+			//memcpy(volume, buffer, sizeof(buffer));
+		} else{
+			std::cout << "error: only " << is.gcount() << " could be read";
+		}
+		is.close();
+
+		// ...buffer contains the entire file...
+
+		delete[] buffer;
+	}
+
+	//ifstream file();
+
+	//file >> data;
+
+	/*if (file.is_open())
+	{
+		string line;
+		while (getline(file, line))
+		{
+			cout << line << endl;
+		}
+		file.close();
+	}*/
+
+	//cout << data << endl;
 }
 
 /**
@@ -349,6 +412,79 @@ void loadFile(string file_path, string file_name)
 	cout << "load" << endl;
 	cout << "File path: " << file_path << endl;
 	cout << "File name: " << file_name << endl;
+	//cin.clear();
+	//cin.ignore(10000, '\n');
+	//cout.flush();
+	//std::ifstream is(file_path, std::ifstream::binary);
+	//char *temp;
+	//temp = (char*) malloc(length);
+	std::ifstream is(file_path);     // open file
+	//char c;
+	//while (is.get(c))          // loop getting single characters
+	//	std::cout << c;
+	//is.close();
+	//int length = is.tellg();
+	char *temp;
+	temp = (char*) malloc(10);
+	memset(temp, '|', 10);
+	//cout << "Size of temp: " << length << endl;
+	char c;
+	int cntr = 0;
+	while(is.get(c)){
+		cout << c;
+		temp[cntr] = c;
+		cntr++;
+	}
+	//cout << temp << endl;
+	//cout << "Reading " << length << " characters... " << endl;
+	// read data as a block:
+	memcpy(volume+5, temp, strlen(temp)-1);
+	for(int i = 0; i < strlen(volume); i++)
+		cout << volume[i];
+	is.close();
+	/*if (is) {
+		// get length of file:
+		is.seekg (0, is.end);
+		int length = is.tellg();
+		is.seekg (0, is.beg);
+
+		char *temp;
+		temp = (char*) malloc(length);
+		cout << "Size of temp: " << length << endl;
+		char c;
+		int cntr = 0;
+		while(is.get(c)){
+			temp[cntr] = c;
+			cntr++;
+		}
+		cout << temp << endl;
+		cout << "Reading " << length << " characters... " << endl;
+		// read data as a block:
+		memcpy(volume, temp, strlen(temp));
+		for(int i = 0; i < strlen(volume); i++)
+			cout << volume[i];
+		is.read (temp,10);
+
+		if (is){
+			cout << "All characters read successfully." << endl;
+			char c;
+			int cntr = 0;
+			while(is.get(c)){
+				temp[cntr] = c;
+				cntr++;
+			}
+			cout << temp << endl;
+			memcpy(volume, temp, strlen(temp));
+			for(int i = 0; i < strlen(volume); i++)
+				cout << volume[i];
+		} else
+			cout << "Error: only " << is.gcount() << " could be read" << endl;
+		is.close();
+
+		// ...buffer contains the entire file...
+
+		delete[] temp;
+	}*/
 }
 
 /**

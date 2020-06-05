@@ -67,11 +67,13 @@ int main(){
 		//system("cls");
 
 	} while(iterator_command == 'y' || iterator_command == 'Y');
-	if(strlen(volume) > 0)
+	if(strlen(volume) >= 0){
 		free(volume);
+		cout << "Memory released" << endl;
+	}
 
 	//Finish program
-	cout<<"Virtual File System Finished"<<endl;
+	cout << "Virtual File System Finished" << endl;
 	return 0;
 }
 
@@ -212,9 +214,9 @@ void createVolume(string volume_name, string block_size, string block_number){
 	int blockNumber = stoi(block_number);
 
 	volume = (char*) malloc(blockSize * blockNumber);
-	memset(volume, '0', blockSize * blockNumber);
-	//for (int i = 0; i < strlen(volume); i++)
-        //	cout << volume[i] << " ";
+	memset(volume, '|', blockSize * blockNumber);
+	for (int i = 0; i < strlen(volume); i++)
+        	cout << volume[i] << " ";
 
 	cout << "create" << endl;
 	cout << "Block name: " << volume_name << endl;

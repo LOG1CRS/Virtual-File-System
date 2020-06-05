@@ -3,6 +3,7 @@
 #include <iterator>
 //#include <windows.h>
 #include <string>
+#include <cstring>
 #include <sstream>
 #include <algorithm>
 #include <cctype>
@@ -30,7 +31,7 @@ bool isNumber(string);
 
 //Global variables
 string command_words[5];
-
+char *volume;
 
 /**
  * Main function
@@ -66,6 +67,8 @@ int main(){
 		//system("cls");
 
 	} while(iterator_command == 'y' || iterator_command == 'Y');
+	if(strlen(volume) > 0)
+		free(volume);
 
 	//Finish program
 	cout<<"Virtual File System Finished"<<endl;
@@ -208,10 +211,16 @@ void createVolume(string volume_name, string block_size, string block_number){
 	int blockSize = stoi(block_size);
 	int blockNumber = stoi(block_number);
 
+	volume = (char*) malloc(blockSize * blockNumber);
+	memset(volume, '0', blockSize * blockNumber);
+	//for (int i = 0; i < strlen(volume); i++)
+        //	cout << volume[i] << " ";
+
 	cout << "create" << endl;
 	cout << "Block name: " << volume_name << endl;
 	cout << "Block size: " << blockSize << endl;
 	cout << "Block number: " << blockNumber << endl;
+	cout << "Volume size: " << strlen(volume);
 }
 
 void unmountVolume(){

@@ -1,7 +1,7 @@
 /**
  * Virtual File System
  *
- * Developed by André Marco Ruiz Sandoval, Alfredo Emmanuel García Falcon, Jorge Alejandro Chávez Nuñez
+ * Developed by André Marco Ruiz Sandoval, Alfredo Emmanuel Garcaa Falcon, Jorge Alejandro Chávez Nuñez
  * Final project for Operating System Course.
  * Professor Miguel Alcaraz Rivera
  *
@@ -17,6 +17,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+//#include <string.h>
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -44,6 +45,7 @@ string command_words[5];
 char *volume;
 int blockSize;
 int blockNumber;
+bool createdVolume = false;
 
 /**
  * Main function
@@ -81,7 +83,7 @@ int main()
 		//system("cls");
 
 	} while (iterator_command == 'y' || iterator_command == 'Y');
-	if (strlen(volume) >= 0){
+	if (createdVolume){
 		free(volume);
 		cout << "Memory released" << endl;
 	}
@@ -288,6 +290,8 @@ void createVolume(string volume_name, string block_size, string block_number)
 	blockSize = stoi(block_size);
 	blockNumber = stoi(block_number);
 
+
+	int freeSpace = 127485;
 	volume = (char*) malloc(blockSize * blockNumber);
 	memset(volume, '|', blockSize * blockNumber);
 	char validVolume[] = "Valid Virtual File System";
@@ -296,10 +300,54 @@ void createVolume(string volume_name, string block_size, string block_number)
         	cout << volume[i];
 
 	cout << endl << "create" << endl;
-	cout << "Block name: " << volume_name << endl;
+	cout << "Volume name: " << volume_name << endl;
 	cout << "Block size: " << blockSize << endl;
 	cout << "Block number: " << blockNumber << endl;
 	cout << "Volume size: " << strlen(volume);
+
+	char volumeName[16];
+	char volumeNameChar[16];
+	string volumeNameString = "Volume name: ";
+	strcpy(volumeName, volume_name.c_str());
+	strcpy(volumeNameChar, volumeNameString.c_str());
+	memcpy(volume+blockSize, volumeNameChar , strlen(volumeNameChar));
+	memcpy(volume+blockSize+16, volumeName , strlen(volumeName));
+
+	char blockSizeConverted[16];
+	string tempBlockSize = to_string(blockSize);
+	strcpy(blockSizeConverted, tempBlockSize.c_str());
+	char blockSizeChar[16];
+	string blockSizeString = "Block size: ";
+	strcpy(blockSizeChar, blockSizeString.c_str());
+	memcpy(volume+blockSize+32, blockSizeChar , strlen(blockSizeChar));
+	memcpy(volume+blockSize+48, blockSizeConverted , strlen(blockSizeConverted));
+
+	char blockNumberConverted[16];
+	string tempBlockNumber = to_string(blockNumber);
+	strcpy(blockNumberConverted, tempBlockNumber.c_str());
+	char blockNumberChar[16];
+	string blockNumberString = "Block number: ";
+	strcpy(blockNumberChar, blockNumberString.c_str());
+	memcpy(volume+blockSize+64, blockNumberChar , strlen(blockNumberChar));
+	memcpy(volume+blockSize+80, blockNumberConverted , strlen(blockNumberConverted));
+
+	char freeSpaceConverted[16];
+	string tempFreeSpace = to_string(freeSpace);
+	strcpy(freeSpaceConverted, tempFreeSpace.c_str());
+	char freeSpaceChar[16];
+	string freeSpaceString = "Free space: ";
+	strcpy(freeSpaceChar, freeSpaceString.c_str());
+	memcpy(volume+blockSize+96, freeSpaceChar , strlen(freeSpaceChar));
+	memcpy(volume+blockSize+112, freeSpaceConverted , strlen(freeSpaceConverted));
+	//memcpy(volume+blockSize+32, "Block size" , strlen("Block size"));
+	//memcpy(volume+blockSize+48, to_string(blockSize) , strlen(blockSize));
+	//memcpy(volume+blockSize+64, "Block number" , strlen("Block number"));
+	//memcpy(volume+blockSize+72, to_string(blockNumber) , strlen(blockNumber));
+	//memcpy(volume+blockSize+96, "Free space" , strlen("Free space"));
+	//memcpy(volume+blockSize+112, to_string(freeSpace) , strlen(freeSpace));
+	for (int i = 0; i < strlen(volume); i++)
+        	cout << volume[i];
+	createdVolume = true;
 }
 
 /**
@@ -311,6 +359,10 @@ void createVolume(string volume_name, string block_size, string block_number)
  */
 void unmountVolume()
 {
+	if(!createdVolume){
+		cout << "Volume not created" << endl;
+		return;
+	}
 	char *data;
 	data = (char*) malloc(sizeof(volume));
 	memcpy(data, volume, sizeof(volume));
@@ -319,6 +371,8 @@ void unmountVolume()
 	fout.open("file.loco");
 	fout << volume;
 	fout.close();
+	free(volume);
+	createdVolume = false;
 
 	cout << "File saved, called file.loco" << endl;
 }
@@ -335,6 +389,11 @@ void mountVolume(string file_name)
 	if (file_name == "")
 	{
 		cout << "Plase type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
+		return;
+	}
+
+	if(createdVolume){
+		cout << "Volume already mounted" << endl;
 		return;
 	}
 
@@ -364,6 +423,20 @@ void mountVolume(string file_name)
 			//cout << checkVolume;
 			for(int i = 0; i < strlen(checkVolume); i++)
 				cout << checkVolume[i];
+			//int eq = validVolume.compare(checkVolume);
+			if(strcmp(checkVolume, validVolume) == 0){
+				cout << endl << "Valid volume. Proceeding to copy" << endl;
+				cout << "Size of buffer: " << length << endl;
+				volume = (char*) malloc(length);
+				memset(volume, '|', length);
+				//cout << "Previous print volume" << endl;
+				//char *temp;
+				//strcpy(temp, buffer);
+				memcpy(volume, buffer, length);
+				for(int i = 0; i < strlen(volume); i++)
+					cout << volume[i];
+				createdVolume = true;
+			}
 			//memcpy(volume, buffer, sizeof(buffer));
 		} else{
 			std::cout << "error: only " << is.gcount() << " could be read";

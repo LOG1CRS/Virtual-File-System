@@ -375,7 +375,7 @@ void createVolume(string volume_name, string block_size, string block_number)
 void unmountVolume()
 {
 	if(!createdVolume){
-		cout << "Volume not created" << endl;
+		cout << "Volume not created." << endl;
 		return;
 	}
 	char *data;
@@ -408,7 +408,7 @@ void mountVolume(string file_name)
 	}
 
 	if(createdVolume){
-		cout << "Volume already mounted" << endl;
+		cout << "Volume already mounted." << endl;
 		return;
 	}
 
@@ -446,9 +446,9 @@ void mountVolume(string file_name)
 				cout << "Block number: " << blockNumber << endl;
 				cout << "Free space: " << freeSpace << endl;
 				createdVolume = true;
-				printVolume();
+				//printVolume();
 			} else{
-				cout << "File system invalid" << endl;
+				cout << "File system invalid." << endl;
 				return;
 			}
 		} else {
@@ -480,7 +480,7 @@ void loadFile(string file_path, string file_name)
 	}
 
 	if(!createdVolume){
-		cout << "Volume not created" << endl;
+		cout << "Volume not created." << endl;
 		return;
 	}
 
@@ -630,9 +630,93 @@ void downloadFile(string virtual_file_name, string local_file_name)
 		return;
 	}
 
-	cout << "download" << endl;
-	cout << "Virtual file name: " << virtual_file_name << endl;
-	cout << "Local file name: " << local_file_name << endl;
+	//cout << "download" << endl;
+	//cout << "Virtual file name: " << virtual_file_name << endl;
+	//cout << "Local file name: " << local_file_name << endl;
+	int increment = 64;
+	char file[16];
+	memset(file, 0, 16);
+	int cntr= 0;
+	int startDel;
+	bool finded = false;
+	//cout << "Files in volume:" << endl;
+	for(int i = blockSize*2; i < blockSize*3; i += increment){
+		if(volume[i] != '|'){
+			for(int j = i; j < strlen(volume); j++){
+				if(volume[j] == '|'){
+					break;
+				} else{
+					file[cntr] = volume[j];
+					cntr++;
+				}
+			}
+			cntr = 0;
+			if(strcmp(file, virtual_file_name.c_str()) == 0){
+				//strcpy(blockSizeChar, blockSizeString.c_str());
+				cout << "File found." << endl;
+				startDel = i;
+				finded = true;
+			}
+			//cout << file << endl;
+			memset(file, 0, 16);
+		}
+	}
+	if(!finded){
+		cout << "File not found." << endl;
+	} else {
+		//char* deleteFile;
+		//deleteFile = (char*) malloc(64);
+		//memset(deleteFile, '|', 64);
+		//memcpy(volume+startDel, deleteFile, 64);
+		//printVolume();
+
+		cntr = 0;
+		char* sizeFile;
+		sizeFile = (char*) malloc(6);
+		memset(sizeFile, 0, 6);
+		for(int i = startDel+22; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				sizeFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		//cout << "File size: " << sizeFile << endl;
+		int size = atoi(sizeFile);
+		//cout << size << endl;
+
+		cntr = 0;
+		char* blockFile;
+		blockFile = (char*) malloc(6);
+		memset(blockFile, 0, 6);
+		for(int i = startDel+58; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				blockFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		//cout << "FCB: " << blockFile << endl;
+		int fcb = atoi(blockFile);
+		//cout << fcb << endl;
+
+		char* toDownload;
+		toDownload = (char*) malloc(size);
+		memcpy(toDownload, volume+(blockSize*35)+(fcb*blockSize), size);
+		//memcpy(volume+(blockSize*));
+		//cout << toDownload << endl;
+
+		ofstream fout;
+		fout.open(local_file_name);
+		fout << toDownload;
+		fout.close();
+		//free(volume);
+		//createdVolume = false;
+
+		cout << "File saved, called "<< local_file_name << endl;
+	}
 }
 
 /**
@@ -673,7 +757,7 @@ void rmFile(string file_name)
 			cntr = 0;
 			if(strcmp(file, file_name.c_str()) == 0){
 				//strcpy(blockSizeChar, blockSizeString.c_str());
-				cout << "Archivo encontrado y eliminado." << endl;
+				cout << "File found and deleted." << endl;
 				startDel = i;
 				finded = true;
 			}
@@ -682,7 +766,7 @@ void rmFile(string file_name)
 		}
 	}
 	if(!finded){
-		cout << "Archivo no encontrado." << endl;
+		cout << "File not found." << endl;
 	} else {
 		char* deleteFile;
 		deleteFile = (char*) malloc(64);
@@ -734,7 +818,7 @@ void lsFiles()
 void info()
 {
 	if(!createdVolume){
-		cout << "Volume not created" << endl;
+		cout << "Volume not created." << endl;
 		return;
 	}
 	cout << "Volume info." << endl;
@@ -783,7 +867,7 @@ void details(string file_name)
 			cntr = 0;
 			if(strcmp(file, file_name.c_str()) == 0){
 				//strcpy(blockSizeChar, blockSizeString.c_str());
-				cout << "Archivo encontrado." << endl;
+				cout << "File found." << endl;
 				startDel = i;
 				finded = true;
 			}
@@ -792,7 +876,7 @@ void details(string file_name)
 		}
 	}
 	if(!finded){
-		cout << "Archivo no encontrado." << endl;
+		cout << "File not found." << endl;
 	} else {
 		cntr = 0;
 		char* nameFile;
@@ -863,7 +947,6 @@ void details(string file_name)
 			}
 		}
 		cout << "FCB: " << blockFile << endl;
-		cntr = 0;
 	}
 }
 

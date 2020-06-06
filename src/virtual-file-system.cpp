@@ -120,6 +120,7 @@ void typeCommand()
 	string command;
 	cout << "Please type a command" << endl;
 	getline(cin, command);
+	cout << endl;
 	int num_words = splitCommand(command);
 
 	switch (resolveUserOption(command_words[0]))
@@ -206,7 +207,7 @@ int splitCommand(string command)
 	{
 		string word;
 		spliter >> word;
-		cout << word << endl;
+		//cout << word << endl;
 		command_words[num_of_words] = word;
 		num_of_words++;
 	} while (spliter);
@@ -318,7 +319,7 @@ void createVolume(string volume_name, string block_size, string block_number)
 	char validVolume[] = "Valid Virtual File System";
 	memcpy(volume, validVolume, strlen(validVolume));
 
-	cout << endl << "create" << endl;
+	cout << endl << "Volume created." << endl;
 	cout << "Volume name: " << volume_name << endl;
 	cout << "Block size: " << blockSize << endl;
 	cout << "Block number: " << blockNumber << endl;
@@ -361,7 +362,7 @@ void createVolume(string volume_name, string block_size, string block_number)
 
 	createFreeTable();
 	createdVolume = true;
-	printVolume();
+	//printVolume();
 }
 
 /**
@@ -411,8 +412,8 @@ void mountVolume(string file_name)
 		return;
 	}
 
-	cout << "mount" << endl;
-	cout << "File name: " << file_name << endl;
+	//cout << "mount" << endl;
+	//cout << "File name: " << file_name << endl;
 
 	std::ifstream is (file_name, std::ifstream::binary);
 	if (is) {
@@ -435,7 +436,7 @@ void mountVolume(string file_name)
 			for(int i = 0; i < strlen(validVolume); i++)
 				checkVolume[i]=buffer[i];
 			if(strcmp(checkVolume, validVolume) == 0){
-				cout << endl << "Valid volume. Proceeding to copy" << endl;
+				cout << "Valid volume. Proceeding to copy" << endl;
 				volume = (char*) malloc(length);
 				memcpy(volume, buffer, length);
 				getAllVolumeInfo();
@@ -445,7 +446,7 @@ void mountVolume(string file_name)
 				cout << "Block number: " << blockNumber << endl;
 				cout << "Free space: " << freeSpace << endl;
 				createdVolume = true;
-				//printVolume();
+				printVolume();
 			} else{
 				cout << "File system invalid" << endl;
 				return;
@@ -483,9 +484,9 @@ void loadFile(string file_path, string file_name)
 		return;
 	}
 
-	cout << "load" << endl;
-	cout << "File path: " << file_path << endl;
-	cout << "File name: " << file_name << endl;
+	//cout << "load" << endl;
+	//cout << "File path: " << file_path << endl;
+	//cout << "File name: " << file_name << endl;
 
 	if(file_name.size() > 16){
 		cout << "File name must be less than 16 characters." << endl;
@@ -650,8 +651,45 @@ void rmFile(string file_name)
 		return;
 	}
 
-	cout << "rm" << endl;
-	cout << "File name: " << file_name << endl;
+	//cout << "rm" << endl;
+	//cout << "File name: " << file_name << endl;
+	int increment = 64;
+	char file[16];
+	memset(file, 0, 16);
+	int cntr= 0;
+	int startDel;
+	bool finded = false;
+	cout << "Files in volume:" << endl;
+	for(int i = blockSize*2; i < blockSize*3; i += increment){
+		if(volume[i] != '|'){
+			for(int j = i; j < strlen(volume); j++){
+				if(volume[j] == '|'){
+					break;
+				} else{
+					file[cntr] = volume[j];
+					cntr++;
+				}
+			}
+			cntr = 0;
+			if(strcmp(file, file_name.c_str()) == 0){
+				//strcpy(blockSizeChar, blockSizeString.c_str());
+				cout << "Archivo encontrado y eliminado" << endl;
+				startDel = i;
+				finded = true;
+			}
+			//cout << file << endl;
+			memset(file, 0, 16);
+		}
+	}
+	if(!finded){
+		cout << "Archivo no encontrado." << endl;
+	} else {
+		char* deleteFile;
+		deleteFile = (char*) malloc(64);
+		memset(deleteFile, '|', 64);
+		memcpy(volume+startDel, deleteFile, 64);
+		printVolume();
+	}
 }
 
 /**
@@ -666,6 +704,7 @@ void lsFiles()
 	//cout << "ls" << endl;
 	int increment = 64;
 	char file[16];
+	memset(file, 0, 16);
 	int cntr= 0;
 	cout << "Files in volume:" << endl;
 	for(int i = blockSize*2; i < blockSize*3; i += increment){
@@ -698,6 +737,7 @@ void info()
 		cout << "Volume not created" << endl;
 		return;
 	}
+	cout << "Volume info." << endl;
 	cout << "Volume name: " << allVolumeName << endl;
 	cout << "Block size: " << blockSize << endl;
 	cout << "Block number: " << blockNumber << endl;

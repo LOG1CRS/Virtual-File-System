@@ -673,7 +673,7 @@ void rmFile(string file_name)
 			cntr = 0;
 			if(strcmp(file, file_name.c_str()) == 0){
 				//strcpy(blockSizeChar, blockSizeString.c_str());
-				cout << "Archivo encontrado y eliminado" << endl;
+				cout << "Archivo encontrado y eliminado." << endl;
 				startDel = i;
 				finded = true;
 			}
@@ -760,8 +760,111 @@ void details(string file_name)
 		return;
 	}
 
-	cout << "details" << endl;
-	cout << "File name: " << file_name << endl;
+	//cout << "details" << endl;
+	//cout << "File name: " << file_name << endl;
+
+	int increment = 64;
+	char file[16];
+	memset(file, 0, 16);
+	int cntr= 0;
+	int startDel;
+	bool finded = false;
+	//cout << "Files in volume:" << endl;
+	for(int i = blockSize*2; i < blockSize*3; i += increment){
+		if(volume[i] != '|'){
+			for(int j = i; j < strlen(volume); j++){
+				if(volume[j] == '|'){
+					break;
+				} else{
+					file[cntr] = volume[j];
+					cntr++;
+				}
+			}
+			cntr = 0;
+			if(strcmp(file, file_name.c_str()) == 0){
+				//strcpy(blockSizeChar, blockSizeString.c_str());
+				cout << "Archivo encontrado." << endl;
+				startDel = i;
+				finded = true;
+			}
+			//cout << file << endl;
+			memset(file, 0, 16);
+		}
+	}
+	if(!finded){
+		cout << "Archivo no encontrado." << endl;
+	} else {
+		cntr = 0;
+		char* nameFile;
+		nameFile = (char*) malloc(16);
+		memset(nameFile, 0, 16);
+		for(int i = startDel; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				nameFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		cout << "File name: " << nameFile << endl;
+		cntr = 0;
+
+		char* idFile;
+		idFile = (char*) malloc(6);
+		memset(idFile, 0, 6);
+		for(int i = startDel+16; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				idFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		cout << "ID: " << idFile << endl;
+		cntr = 0;
+
+		char* sizeFile;
+		sizeFile = (char*) malloc(6);
+		memset(sizeFile, 0, 6);
+		for(int i = startDel+22; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				sizeFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		cout << "File size: " << sizeFile << endl;
+		cntr = 0;
+
+		char* dateFile;
+		dateFile = (char*) malloc(30);
+		memset(dateFile, 0, 30);
+		for(int i = startDel+28; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				dateFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		cout << "File date: " << dateFile << endl;
+		cntr = 0;
+
+		char* blockFile;
+		blockFile = (char*) malloc(6);
+		memset(blockFile, 0, 6);
+		for(int i = startDel+58; i < strlen(volume); i++){
+			if(volume[i] == '|'){
+				break;
+			} else{
+				blockFile[cntr] = volume[i];
+				cntr++;
+			}
+		}
+		cout << "FCB: " << blockFile << endl;
+		cntr = 0;
+	}
 }
 
 /**

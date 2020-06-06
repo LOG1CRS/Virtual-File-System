@@ -412,7 +412,7 @@ void mountVolume(string file_name)
 	}
 
 	cout << "mount" << endl;
-	cout << "Block name: " << file_name << endl;
+	cout << "File name: " << file_name << endl;
 
 	std::ifstream is (file_name, std::ifstream::binary);
 	if (is) {
@@ -439,6 +439,7 @@ void mountVolume(string file_name)
 				volume = (char*) malloc(length);
 				memcpy(volume, buffer, length);
 				getAllVolumeInfo();
+				allVolumeName = file_name;
 				cout << "Volume name: " << allVolumeName << endl;
 				cout << "Block size: " << blockSize << endl;
 				cout << "Block number: " << blockNumber << endl;
@@ -662,7 +663,26 @@ void rmFile(string file_name)
  */
 void lsFiles()
 {
-	cout << "ls" << endl;
+	//cout << "ls" << endl;
+	int increment = 64;
+	char file[16];
+	int cntr= 0;
+	cout << "Files in volume:" << endl;
+	for(int i = blockSize*2; i < blockSize*3; i += increment){
+		if(volume[i] != '|'){
+			for(int j = i; j < strlen(volume); j++){
+				if(volume[j] == '|'){
+					break;
+				} else{
+					file[cntr] = volume[j];
+					cntr++;
+				}
+			}
+			cntr = 0;
+			cout << file << endl;
+			memset(file, 0, 16);
+		}
+	}
 }
 
 /**
@@ -674,7 +694,14 @@ void lsFiles()
  */
 void info()
 {
-	cout << "info" << endl;
+	if(!createdVolume){
+		cout << "Volume not created" << endl;
+		return;
+	}
+	cout << "Volume name: " << allVolumeName << endl;
+	cout << "Block size: " << blockSize << endl;
+	cout << "Block number: " << blockNumber << endl;
+	cout << "Volume size: " << strlen(volume) << endl;
 }
 
 /**
@@ -805,7 +832,7 @@ void getAllVolumeInfo(){
 		}
 	}
 	cntr = 0;
-	allVolumeName = getVolumeName;
+	//allVolumeName = getVolumeName;
 	blockSize = atoi(getBlockSize);
 	blockNumber = atoi(getBlockNumber);
 	freeSpace = atoi(getFreeSpace);

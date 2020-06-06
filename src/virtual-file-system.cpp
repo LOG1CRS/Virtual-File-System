@@ -87,9 +87,6 @@ int main()
 		cout << "Do you want type another command? (y|n)" << endl;
 		cin >> iterator_command;
 
-		//Clear
-		system("cls");
-
 	} while (iterator_command == 'y' || iterator_command == 'Y');
 	if (createdVolume)
 	{
@@ -376,7 +373,12 @@ void unmountVolume()
 	memcpy(data, volume, sizeof(volume));
 
 	ofstream fout;
-	fout.open(allVolumeName + ".loco");
+	if (!createdVolume){
+		fout.open(allVolumeName + ".loco");
+	}
+	if (!createdVolume){
+		fout.open(allVolumeName);
+	}
 	fout << volume;
 	fout.close();
 	free(volume);
@@ -511,38 +513,32 @@ void loadFile(string file_path, string file_name)
 			if (startWriting == -1)
 				return;
 			memcpy(volume + (blockSize * 35) + (startWriting * blockSize), buffer, length);
-			cout << "Start writing: " << startWriting << endl;
 			int directoryIndex = checkAvailableDirectory();
 			if (directoryIndex == -1)
 				return;
-			cout << "Directory index: " << directoryIndex << endl;
 			char name[16];
 			strcpy(name, file_name.c_str());
-			cout << name << endl;
 			memcpy(volume + directoryIndex, name, strlen(name));
 
 			char id[6];
 			string tempId = to_string(directoryIndex);
 			strcpy(id, tempId.c_str());
-			cout << id << endl;
 			memcpy(volume + directoryIndex + 16, id, strlen(id));
 
 			char size[6];
 			string tempLength = to_string(length);
 			strcpy(size, tempLength.c_str());
-			cout << size << endl;
 			memcpy(volume + directoryIndex + 22, size, strlen(size));
 
 			time_t now = time(0);
 			char *date = ctime(&now);
-			cout << date << endl;
 			memcpy(volume + directoryIndex + 28, date, strlen(date) - 1);
 
 			char start[6];
 			string tempStart = to_string(startWriting);
 			strcpy(start, tempStart.c_str());
-			cout << start << endl;
 			memcpy(volume + directoryIndex + 58, start, strlen(start));
+			cout << "File loaded successfully." << endl;
 		}
 		else
 			cout << "Error: only " << is.gcount() << " could be read" << endl;
@@ -556,7 +552,6 @@ void loadFile(string file_path, string file_name)
 	{
 		cout << "Cannot load file." << endl;
 	}
-	printVolume();
 }
 
 /**
@@ -573,6 +568,12 @@ void downloadFile(string virtual_file_name, string local_file_name)
 	if (virtual_file_name == "" || local_file_name == "")
 	{
 		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you " << endl;
+		return;
+	}
+
+	if (!createdVolume)
+	{
+		cout << "Volume not created." << endl;
 		return;
 	}
 
@@ -612,9 +613,7 @@ void downloadFile(string virtual_file_name, string local_file_name)
 	if (!finded)
 	{
 		cout << "File not found." << endl;
-	}
-	else
-	{
+	} else {
 
 		cntr = 0;
 		char *sizeFile;
@@ -683,6 +682,12 @@ void rmFile(string file_name)
 		return;
 	}
 
+	if (!createdVolume)
+	{
+		cout << "Volume not created." << endl;
+		return;
+	}
+
 	int increment = 64;
 	char file[16];
 	memset(file, 0, 16);
@@ -726,7 +731,6 @@ void rmFile(string file_name)
 		deleteFile = (char *)malloc(64);
 		memset(deleteFile, '|', 64);
 		memcpy(volume + startDel, deleteFile, 64);
-		printVolume();
 	}
 }
 
@@ -738,6 +742,13 @@ void rmFile(string file_name)
  */
 void lsFiles()
 {
+
+	if (!createdVolume)
+	{
+		cout << "Volume not created." << endl;
+		return;
+	}
+
 	int increment = 64;
 	char file[16];
 	memset(file, 0, 16);
@@ -784,6 +795,7 @@ void info()
 	cout << "Block size: " << blockSize << endl;
 	cout << "Block number: " << blockNumber << endl;
 	cout << "Volume size: " << strlen(volume) << endl;
+	cout << "Free space: " << freeSpace << endl;
 }
 
 /**
@@ -799,6 +811,12 @@ void details(string file_name)
 	if (file_name == "")
 	{
 		cout << "Please type a VALID PARAMETERS for this command, if you have a doubt please type a command: 'manual' to help you." << endl;
+		return;
+	}
+
+	if (!createdVolume)
+	{
+		cout << "Volume not created." << endl;
 		return;
 	}
 
@@ -1096,7 +1114,6 @@ void createFreeTable()
 int checkAvailableSpace(int fileSize)
 {
 	int neededSpaces = (fileSize / blockSize) + 1;
-	cout << "Spaces needed for your file: " << neededSpaces << endl;
 	bool isFree = false;
 	int availableCntr = 0;
 	int freeCntr = 0;
@@ -1126,12 +1143,10 @@ int checkAvailableSpace(int fileSize)
 					}
 				}
 				int tempSpace = atoi(getFreeSpace);
-				cout << "Taken out free space" << endl;
 				tempSpace = tempSpace - neededSpaces;
 				char f[16];
 				string fS = to_string(tempSpace);
 				strcpy(f, fS.c_str());
-				cout << "Free space: " << f << endl;
 				memcpy(volume + blockSize + volumeInfoFreeSpaceNum, f, strlen(f));
 			}
 		}

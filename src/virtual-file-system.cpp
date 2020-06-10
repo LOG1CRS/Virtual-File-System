@@ -52,6 +52,7 @@ int blockSize;
 int blockNumber;
 int freeSpace;
 bool createdVolume = false;
+bool mountedVolume = false;
 int volumeInfoBlockSize = 32;
 int volumeInfoBlockSizeNum = 48;
 int volumeInfoBlockNumber = 64;
@@ -373,10 +374,10 @@ void unmountVolume()
 	memcpy(data, volume, sizeof(volume));
 
 	ofstream fout;
-	if (!createdVolume){
+	if (!mountedVolume){
 		fout.open(allVolumeName + ".loco");
 	}
-	if (!createdVolume){
+	if (mountedVolume){
 		fout.open(allVolumeName);
 	}
 	fout << volume;
@@ -384,7 +385,14 @@ void unmountVolume()
 	free(volume);
 	createdVolume = false;
 
-	cout << "File saved, called " << allVolumeName << ".loco" << endl;
+	if (!mountedVolume){
+		cout << "File saved, called " << allVolumeName << ".loco" << endl;
+	}
+
+	if (mountedVolume){
+		cout << "File saved, called " << allVolumeName << endl;
+	}
+
 }
 
 /**
@@ -430,6 +438,7 @@ void mountVolume(string file_name)
 			checkVolume = (char *)malloc(sizeof(validVolume));
 			for (int i = 0; i < strlen(validVolume); i++)
 				checkVolume[i] = buffer[i];
+			cout << checkVolume << endl;
 			if (strcmp(checkVolume, validVolume) == 0)
 			{
 				cout << "Valid volume. Proceeding to copy" << endl;
@@ -442,6 +451,7 @@ void mountVolume(string file_name)
 				cout << "Block number: " << blockNumber << endl;
 				cout << "Free space: " << freeSpace << endl;
 				createdVolume = true;
+				mountedVolume = true;
 			}
 			else
 			{

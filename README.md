@@ -35,7 +35,7 @@ Contributions are closed.
 
 ## Authors
 
-* **Alfredo Emmanuel Garcaa Falcon** - *Student* - [AcesTerra](https://github.com/AcesTerra)
+* **Alfredo Emmanuel García Falcon** - *Student* - [AcesTerra](https://github.com/AcesTerra)
 * **André Marco Ruiz Sandoval** - *Student* - [LOG1CRS](https://github.com/LOG1CRS)
 * **Jorge Alejandro Chávez Nuñez** - *Student* - [ChavezJan](https://github.com/ChavezJan)
 
@@ -46,4 +46,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 ## What did we learned from this project?
 
 * How file systems works.
-* how the malloc function works
+* how malloc function works

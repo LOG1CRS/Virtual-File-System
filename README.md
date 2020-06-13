@@ -5,11 +5,11 @@ Virtual File System made with c++
 You can clone or download the project and run it with a C++ compiler.
 
 ### Commands for Virtual File System
- - Command: **create <name> <blockSize> <numberOfBlocks>**
+ - Command: **create *<.name>* <.blockSize> <.numberOfBlocks>**
  	 - Details: 'create' Loads the virtual file system into memory. If it doesn't exist create a new one. Block sizes can be 128, 256, 512, or 1024 bytes. The maximum size of the created volume is 1GB.
  - Command: **unmount**
  	 - Details: 'unmount' Saves virtual file system to specified file on hard drive.
- - Command: **mount <name>**
+ - Command: **mount <.name>**
  	 - Details: 'mount' Loads a previously saved file system into memory.
  - Command: **load <*./original.txt> <copy.txt>**
  	 - Details: 'load' Loads a file to the virtual file system from the local hard drive.
@@ -46,4 +46,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 ## What did we learned from this project?
 
 * How file systems works.
-* how malloc function works
+* How malloc function works.

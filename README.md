@@ -2,22 +2,22 @@
 Virtual File System made with c++
 
 ## Getting Started
-You can clone or download the project and run it with a c++ IDE.
+You can clone or download the project and run it with a C++ compiler.
 
 ### Commands for Virtual File System
- - Command: **create (name) (blockSize) (numberOfBlocks)**
+ - Command: **create <name> <blockSize> <numberOfBlocks>**
  	 - Details: 'create' Loads the virtual file system into memory. If it doesn't exist create a new one. Block sizes can be 128, 256, 512, or 1024 bytes. The maximum size of the created volume is 1GB.
  - Command: **unmount**
  	 - Details: 'unmount' Saves virtual file system to specified file on hard drive.
- - Command: **mount (name)**
+ - Command: **mount <name>**
  	 - Details: 'mount' Loads a previously saved file system into memory.
- - Command: **load (*./original.txt) (copy.txt)**
+ - Command: **load <*./original.txt> <copy.txt>**
  	 - Details: 'load' Loads a file to the virtual file system from the local hard drive.
- - Command: **download (copy.txt) (newCopy.txt)**
+ - Command: **download <copy.txt> <newCopy.txt>**
  	 - Details: 'download' Downloads a file from the virtual file system to the local hard drive.
- - Command: **rm (archivo.txt)**
+ - Command: **rm <file.txt>**
  	 - Details: 'rm' deletes a file from the virtual file system.
- - Command:  **details (file.txt)**
+ - Command:  **details <file.txt>**
  	 - Details: 'details' Shows the details of how a file is saved including the number of blocks it uses and the list of blocks where it is saved.
  - Command: **ls**
  	 - Details: 'ls' Lists the files.
